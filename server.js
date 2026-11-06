@@ -1,22 +1,21 @@
-// Import required packages
+// Required Packages.
 const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const path = require("path");
 
 const app = express();
+
+// The port
 const PORT = 3000;
 
-/*
-    Simple in-memory user storage.
-    For production systems use a database.
-*/
+// In-memory user storage.
 const users = [];
 
 // Parse form data
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Configure sessions
+// Session Config
 app.use(
     session({
         secret: "mySecretKey",
@@ -28,11 +27,7 @@ app.use(
 // Serve files from public folder
 app.use(express.static(path.join(__dirname, "public")));
 
-/*
-====================================================
-REGISTER
-====================================================
-*/
+//Start of the register
 app.post("/register", (req, res) => {
 
     const { username, email, password } = req.body;
@@ -52,11 +47,7 @@ app.post("/register", (req, res) => {
     `);
 });
 
-/*
-====================================================
-LOGIN
-====================================================
-*/
+// The login
 app.post("/login", (req, res) => {
 
     const { username, password } = req.body;
@@ -92,12 +83,7 @@ app.post("/login", (req, res) => {
     }
 });
 
-/*
-====================================================
-PROFILE PAGE
-Shows session username
-====================================================
-*/
+// The Profile Page
 app.get("/profile", (req, res) => {
 
     if (!req.session.username) {
@@ -125,11 +111,7 @@ app.get("/profile", (req, res) => {
     `);
 });
 
-/*
-====================================================
-LOGOUT
-====================================================
-*/
+// The logout
 app.get("/logout", (req, res) => {
 
     req.session.destroy(() => {
@@ -144,7 +126,7 @@ app.get("/logout", (req, res) => {
     });
 });
 
-// Start server
+// Actually Starting the server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
